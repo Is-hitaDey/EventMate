@@ -6,7 +6,7 @@ const {
     logoutUser,
     verifyOtp,
     resendOtp
-} = require("../controllers/authController");
+} = require("../controllers/User.controller");
 
 const Authmiddleware= require("../middleware/Authmiddleware")
 

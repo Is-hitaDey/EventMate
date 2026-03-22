@@ -39,3 +39,35 @@ exports.getEventReviews = async (req, res) => {
     });
   }
 };
+
+// Delete Review
+exports.deleteReview = async (req, res) => {
+  try {
+    const review = await Review.findById(req.params.reviewId);
+
+    if (!review) {
+      return res.status(404).json({
+        success: false,
+        message: "Review not found",
+      });
+    }
+
+    if (review.user.toString() !== req.user._id.toString()) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to delete this review",
+      });
+    }
+
+    await review.deleteOne();
+
+    res.status(200).json({
+      success: true,
+      message: "Review deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

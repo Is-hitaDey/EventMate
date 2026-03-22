@@ -4,7 +4,7 @@ const {
     createReview,
     getEventReviews,
     deleteReview
-} = require("../controllers/reviewController");
+} = require("../controllers/Review.controller");
 
 const Authmiddleware = require("../middleware/Authmiddleware");
 

@@ -1,6 +1,6 @@
 require ('dotenv').config({path: "./.env"});
 
-const {app} = require ('./app');
+const app = require('./app');
 const connectDB = require('./db');
 
 
@@ -12,4 +12,4 @@ connectDB()
 })
 .catch((err)=>{
     console.log("MongoDB connection Failed!",err)
-})
+})  
