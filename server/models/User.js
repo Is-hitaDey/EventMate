@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        required:true,
         unique: true,
         match: [/.+@.+\..+/, "Please enter a valid email address"],
         lowercase: true,
@@ -21,18 +22,16 @@ const userSchema = new mongoose.Schema({
     },
     role:{
         type: String,
-        enum :["attendee", "organizer"], 
+        enum :["attendee", "organizer","admin"], 
         default : "attendee"
     },
-    enrolledEvents:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Event"
-    }],
     userActive:{
-        type: String
+        type: Boolean,
+        default: true
     },
     userVerified: {
-        type: String
+        type: Boolean,
+        default: false
     },
     otp:{
         type: String
@@ -55,12 +54,13 @@ userSchema.methods.comparePassword = async function (candidatePassword){
     return await bcrypt.compare(candidatePassword,this.password)
 }
 
-userSchema.methods.generateAccessToken = ()=>{
+userSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
             _id: this.id,
             email: this.email,
-            name: this.name
+            name: this.name,
+            role:this.role
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
@@ -69,10 +69,10 @@ userSchema.methods.generateAccessToken = ()=>{
     )
 }
 
-userSchema.methods.generateRefreshToken = ()=>{
+userSchema.methods.generateRefreshToken = function(){
     return jwt.sign(
         {
-            _id:this.id,
+            _id:this.id
         },
         process.env.REFRESH_TOKEN_SECRET
     ),
