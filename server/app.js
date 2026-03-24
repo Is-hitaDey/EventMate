@@ -16,6 +16,11 @@ app.use(cors({
 }))
 app.use(cookieParser());
 
+// Root Route (Add this)
+app.get("/", (req, res) => {
+  res.send("EventMate API is running 🚀");
+});
+
 
 // Routes
 app.use("/api/auth", authRoutes);
